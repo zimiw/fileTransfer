@@ -1,5 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const Transfer = require('./fileOperate')
+const {BuildExcel } = require('./exportInfo')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 // eslint-disable-next-line global-require
@@ -11,7 +13,7 @@ const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 700,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation:false,
@@ -23,7 +25,7 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
@@ -55,12 +57,16 @@ app.on('activate', () => {
 
 
 const ipcMain = require('electron').ipcMain;
-ipcMain.on('asynchronous-message', function(event, arg) {
-  console.log(arg,'in main');  // prints "ping"
-  event.sender.send('asynchronous-reply', 'pong');
+ipcMain.on('copy-message', function(event, arg1, arg2) {
+  console.log(arg1,arg2,'in main copy-message'); 
+  // event.sender.send('asynchronous-reply', 'pong');
+  Transfer(arg1,arg2)
 });
 
-ipcMain.on('synchronous-message', function(event, arg) {
-  console.log(arg,'main');  // prints "ping"
-  event.returnValue = 'pong';
+ipcMain.on('create-message', function(event, arg1, arg2) {
+  console.log(arg1,arg2,'in main create-message');  // prints "ping"
+  // event.sender.send('asynchronous-reply', 'pong');
+  BuildExcel(arg1,arg2)
 });
+
+

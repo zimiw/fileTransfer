@@ -2,13 +2,8 @@ const path = require("path")
 
 const cphelper = require("fs/promises").cp
 
-
-
-
-
-
-async function Transfer(sourcUrl, targetUrl){
-	const sourceFiles = await readdir(sourcUrl, {withFileTypes:true});
+async function Transfer(sourceUrl, targetUrl){
+	// const sourceFiles = await readdir(sourcUrl, {withFileTypes:true});
 	// const targetFiles = await readdir(targetUrl, {withFileTypes:true});
 	// for(const dir of sourceFiles){
 	// 	if(dir.isDirectory()){
@@ -17,7 +12,7 @@ async function Transfer(sourcUrl, targetUrl){
 	// 		})
 	// 	}
 	// }
-	const result = await cphelper(sourcUrl,targetUrl,{
+	const result = await cphelper(sourceUrl,targetUrl,{
 		force: true,
 		recursive:true,
 		preserveTimestamps:true

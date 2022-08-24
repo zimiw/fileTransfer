@@ -8,24 +8,127 @@
 </head>
 
 <body>
-  <h1>💖 Hello World!</h1>
-  <p>Welcome to your Electron application.</p>
-  <section>
-    <input type="file" id="source_folder" name="source_folder" class="folder-choice" directory webkitdirectory />
-    <div id="test" onclick="testping()">尝试发送消息</div>
+  <h1>💖 Hello Elena!💖 </h1>
+  <p>Welcome to your application.</p>
+  <section class="block-show">
+    <div class="title">拷贝文件到目标路径</div>
+    <div class="file-upload-wrapper">
+      <input type="text" id="source_folder_show" class="file-name" readonly placeholder="请选择源文件目录" />
+      <div class="sub-wrapper">
+        <input type="file" name="source_folder" ref="source_folder" id="source_folder" class="upload-file" directory
+          webkitdirectory />
+        <button class="upload-btn">打开文件夹</button>
+      </div>
+    </div>
+    <div class="file-upload-wrapper">
+      <input type="text" id="target_folder_show" class="file-name" readonly placeholder="请选择目标文件目录" />
+      <div class="sub-wrapper">
+        <input type="file" name="target_folder" ref="target_folder" id="target_folder" class="upload-file" directory
+          webkitdirectory />
+        <button class="upload-btn">打开文件夹</button>
+      </div>
+    </div>
+    <button class="doit" onclick="goCopy()">开始拷贝</button>
+  </section>
+  <section class="block-show">
+
+    <div class="title">生成Excel文件</div>
+    <div class="file-upload-wrapper">
+      <input type="text" id="excel_source_folder_show" class="file-name" readonly placeholder="请选择要生成Excel的文件目录" />
+      <div class="sub-wrapper">
+        <input type="file" name="excel_source_folder" ref="excel_source_folder" id="excel_source_folder"
+          class="upload-file" directory webkitdirectory />
+        <button class="upload-btn">打开文件夹</button>
+      </div>
+    </div>
+    <div class="file-upload-wrapper">
+      <input type="text" id="excel_target_folder_show" class="file-name" readonly placeholder="请选择Excel文件存放目录" />
+      <div class="sub-wrapper">
+        <input type="file" name="excel_target_folder" ref="excel_target_folder" id="excel_target_folder"
+          class="upload-file" directory webkitdirectory />
+        <button class="upload-btn">打开文件夹</button>
+      </div>
+    </div>
+    <button class="doit" onclick="goCreate()">生 成</button>
   </section>
 </body>
 <script>
 
   const ipcRenderer = require('electron').ipcRenderer;
-  console.log(ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
 
-  ipcRenderer.on('asynchronous-reply', function (event, arg) {
-    console.log(arg, 'render'); // prints "pong"
-  });
-  function testping() {
-    console.log('dfdfdfdfdf')
-    ipcRenderer.send('asynchronous-message', 'ping');
+  let sourceUrl = ''
+  let targetUrl = ''
+  let excelSourceUrl = ''
+  let excelTargetUrl = './'
+
+  function goCreate() {
+    console.log('click btn', excelSourceUrl, excelTargetUrl)
+    if (excelTargetUrl && excelSourceUrl) {
+      ipcRenderer.send('create-message', excelSourceUrl, excelTargetUrl);
+    }
+  }
+
+  function goCopy() {
+    console.log('click btn', sourceUrl, targetUrl)
+    if (sourceUrl && targetUrl) {
+      ipcRenderer.send('copy-message', sourceUrl, targetUrl);
+    }
+    // ipcRenderer.send('copy-message', 'dddd', 'dfsfsdf');
+  }
+
+  const source_folder_dom = document.getElementById('source_folder');
+  const target_folder_dom = document.getElementById('target_folder');
+  const excel_target_folder_dom = document.getElementById('excel_target_folder');
+  const excel_source_folder_dom = document.getElementById('excel_source_folder');
+
+
+  source_folder_dom.addEventListener('change', function (e) {
+    e.preventDefault()
+    e.stopPropagation()
+    console.log(e);
+    sourceUrl = getPath(e.target)
+    console.log(document.getElementById('source_folder_show'))
+    document.getElementById('source_folder_show').value = sourceUrl
+  })
+  target_folder_dom.addEventListener('change', function (e) {
+    e.preventDefault()
+    e.stopPropagation()
+    console.log(e);
+    targetUrl = getPath(e.target)
+    excelSourceUrl = targetUrl
+    document.getElementById('target_folder_show').value = targetUrl
+    document.getElementById('excel_source_folder_show').value = targetUrl
+  })
+
+  excel_source_folder_dom.addEventListener('change', function (e) {
+    e.preventDefault()
+    e.stopPropagation()
+    console.log(e);
+    excelSourceUrl = getPath(e.target)
+    document.getElementById('excel_source_folder_show').value = excelSourceUrl
+  })
+
+  excel_target_folder_dom.addEventListener('change', function (e) {
+    e.preventDefault()
+    e.stopPropagation()
+    console.log(e);
+    excelTargetUrl = getPath(e.target)
+    document.getElementById('excel_target_folder_show').value = excelTargetUrl
+  })
+
+
+
+
+
+  function getPath(dom) {
+    if (!dom.files && dom.files.length < 1) {
+      return ''
+    }
+    let path = dom.files[0].path
+    let rPath = dom.files[0].webkitRelativePath
+    let result = path.replace(rPath, rPath.split('/')[0])
+    console.info('文件夹地址：', result)
+    return result
   }
 
 

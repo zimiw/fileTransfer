@@ -5,3 +5,75 @@ body {
   max-width: 38rem;
   padding: 2rem;
 }
+
+
+.block-show {
+  display: block;
+  background-color: antiquewhite;
+  height: 11rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+}
+
+.block-show .title {
+  margin-left: 5%;
+  margin-bottom: 1rem;
+  color: #999;
+}
+
+.block-show .doit {
+  width: 20%;
+  margin-left: 75%;
+  height: 2rem;
+  border-radius: 0.4rem;
+  border: 1px solid yellowgreen;
+  cursor: pointer;
+}
+
+.block-show .doit:hover {
+  border: 1px solid gray;
+}
+
+.block-show .file-upload-wrapper {
+  display: flex;
+  cursor: pointer;
+  width: 90%;
+  margin: auto;
+  justify-content: space-between;
+  height: 2rem;
+  margin-bottom: 1rem;
+}
+
+.block-show .file-upload-wrapper .file-name {
+  width: 80%;
+  border: 1px solid gray;
+  border-radius: 2px;
+  text-indent: 5px;
+  background: #f5f7fa;
+  /* display: inline-flex; */
+}
+
+.block-show .file-upload-wrapper .sub-wrapper {
+  width: 18%;
+  /* display: inline-flex; */
+  position: relative;
+  height: 2rem;
+}
+
+.block-show .file-upload-wrapper .sub-wrapper .upload-file {
+  opacity: 0;
+  z-index: 99;
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+
+}
+
+.block-show .file-upload-wrapper .sub-wrapper .upload-btn {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 2rem;
+}

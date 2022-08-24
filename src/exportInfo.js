@@ -12,7 +12,7 @@ const dataStructure = [{
 	}]
 }]
 
-async function BuildExcel(sourceUrl, position, name){
+async function BuildExcel(sourceUrl, position, name='index.xlsx'){
 
 	try {
 		let data = await getData(sourceUrl)
@@ -105,7 +105,7 @@ function writeExcel(data,position, name){
 }
 
 
-BuildExcel('../test/target', '../test', 'info.xlsx')
+// BuildExcel('../test/target', '../test', 'info.xlsx')
 
 
 
