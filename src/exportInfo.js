@@ -41,18 +41,22 @@ async function getData(sourceUrl){
 				if(subfile.isDirectory()){
 					let subtemp = {}
 					subtemp.date = subfile.name
-					subtemp.images = []
-					temp.list.push(subtemp)
+					
 					let images = await fs.readdir(path.resolve(sourceUrl,file.name, subfile.name), {withFileTypes:true})
 					if(images){
+						let imageArray = []
 						for(let image of images){
+							
 							if(image.isFile() && isImage(path.resolve(sourceUrl,file.name, subfile.name, image.name))){
-								subtemp.images.push(image.name)
+								imageArray.push(image.name)
 							}
 						}
+						subtemp.images = imageArray
 					}
+					temp.list.push(subtemp)
 				}
 			}
+			// console.log('temp is ',temp)
 		}
 	}
 	return data
@@ -61,9 +65,9 @@ async function getData(sourceUrl){
 function isImage(url){
 	// console.log(url)
 	let extname = path.extname(url)
-	console.log(extname)
+	console.log(url)
 	let images = ['.png','.jpg','.jpeg','.bmp']
-	if(images.indexOf(extname)>-1){
+	if(images.indexOf(extname.toLowerCase()) > -1){
 		return true
 	}
 	return false

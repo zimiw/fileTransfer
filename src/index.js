@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-const Transfer = require('./fileOperate')
+const {Transfer,Rename} = require('./fileOperate')
 const {BuildExcel } = require('./exportInfo')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -68,5 +68,13 @@ ipcMain.on('create-message', function(event, arg1, arg2) {
   // event.sender.send('asynchronous-reply', 'pong');
   BuildExcel(arg1,arg2)
 });
+
+ipcMain.on('rename-message', function(event, arg1) {
+  console.log(arg1,'in main rename-message');  // prints "ping"
+  // event.sender.send('asynchronous-reply', 'pong');
+  Rename(arg1)
+});
+
+
 
 

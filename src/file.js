@@ -1,6 +1,6 @@
 const path = require("path")
 
-const Transfer = require("./fileOperate")
+const {Transfer} = require("./fileOperate")
 
 
 function CopyAll(sourcUrl, targetUrl){

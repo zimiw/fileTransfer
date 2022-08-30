@@ -10,6 +10,18 @@
 <body>
   <h1>💖 Hello Elena!💖 </h1>
   <p>Welcome to your application.</p>
+  <section class="block-show" style="height: 7rem;">
+    <div class="title">重命名文件</div>
+    <div class="file-upload-wrapper">
+      <input type="text" id="origin_folder_show" class="file-name" readonly placeholder="请选择源目录" />
+      <div class="sub-wrapper">
+        <input type="file" name="origin_folder" ref="origin_folder" id="origin_folder" class="upload-file" directory
+          webkitdirectory />
+        <button class="upload-btn">打开文件夹</button>
+      </div>
+    </div>
+    <button class="doit" onclick="goRename()">重命名</button>
+  </section>
   <section class="block-show">
     <div class="title">拷贝文件到目标路径</div>
     <div class="file-upload-wrapper">
@@ -60,6 +72,7 @@
   let targetUrl = ''
   let excelSourceUrl = ''
   let excelTargetUrl = './'
+  let originFoler = ''
 
   function goCreate() {
     console.log('click btn', excelSourceUrl, excelTargetUrl)
@@ -76,21 +89,37 @@
     // ipcRenderer.send('copy-message', 'dddd', 'dfsfsdf');
   }
 
+
+  function goRename() {
+    ipcRenderer.send('rename-message', originFoler);
+
+  }
+
+  const origin_folder_dom = document.getElementById('origin_folder');
   const source_folder_dom = document.getElementById('source_folder');
   const target_folder_dom = document.getElementById('target_folder');
   const excel_target_folder_dom = document.getElementById('excel_target_folder');
   const excel_source_folder_dom = document.getElementById('excel_source_folder');
 
 
+
+  origin_folder_dom.addEventListener('change', function (e) {
+    e.preventDefault()
+    e.stopPropagation()
+    console.log(e);
+    originFoler = getPath(e.target)
+    document.getElementById('origin_folder_show').value = originFoler
+  })
+
   source_folder_dom.addEventListener('change', function (e) {
     e.preventDefault()
     e.stopPropagation()
     console.log(e);
     sourceUrl = getPath(e.target)
-    console.log(document.getElementById('source_folder_show'))
     document.getElementById('source_folder_show').value = sourceUrl
   })
   target_folder_dom.addEventListener('change', function (e) {
+    console.log('eefefefefefef')
     e.preventDefault()
     e.stopPropagation()
     console.log(e);
