@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, dialog } = require('electron');
 const path = require('path');
 const {Transfer,Rename} = require('./fileOperate')
 const {BuildExcel } = require('./exportInfo')
@@ -57,22 +57,31 @@ app.on('activate', () => {
 
 
 const ipcMain = require('electron').ipcMain;
-ipcMain.on('copy-message', function(event, arg1, arg2) {
+ipcMain.on('copy-message', async function(event, arg1, arg2) {
   console.log(arg1,arg2,'in main copy-message'); 
   // event.sender.send('asynchronous-reply', 'pong');
-  Transfer(arg1,arg2)
+  await Transfer(arg1,arg2)
+  dialog.showMessageBox({
+    message:"拷贝完成"
+  })
 });
 
-ipcMain.on('create-message', function(event, arg1, arg2) {
+ipcMain.on('create-message', async function(event, arg1, arg2) {
   console.log(arg1,arg2,'in main create-message');  // prints "ping"
   // event.sender.send('asynchronous-reply', 'pong');
-  BuildExcel(arg1,arg2)
+  await BuildExcel(arg1,arg2)
+  dialog.showMessageBox({
+    message:"生成Excel完成"
+  })
 });
 
-ipcMain.on('rename-message', function(event, arg1) {
+ipcMain.on('rename-message', async function(event, arg1) {
   console.log(arg1,'in main rename-message');  // prints "ping"
   // event.sender.send('asynchronous-reply', 'pong');
-  Rename(arg1)
+  await Rename(arg1)
+  dialog.showMessageBox({
+    message:"重命名完成"
+  })
 });
 
 
